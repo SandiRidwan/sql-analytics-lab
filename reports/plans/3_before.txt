@@ -1,0 +1,22 @@
+Index Only Scan using dim_customer_pkey on dim_customer c  (cost=0.28..2086424.08 rows=500 width=36) (actual time=31.968..13881.070 rows=500.00 loops=1)
+  Index Cond: (customer_id <= 500)
+  Heap Fetches: 0
+  Index Searches: 1
+  Buffers: shared hit=696004
+  SubPlan 1
+    ->  Aggregate  (cost=4172.79..4172.80 rows=1 width=32) (actual time=27.748..27.748 rows=1.00 loops=500)
+          Buffers: shared hit=696000
+          ->  Hash Join  (cost=1207.15..4172.56 rows=30 width=10) (actual time=7.108..27.659 rows=29.70 loops=500)
+                Hash Cond: (i.order_id = o.order_id)
+                Buffers: shared hit=696000
+                ->  Seq Scan on fact_order_items i  (cost=0.00..2413.90 rows=146990 width=14) (actual time=0.004..8.776 rows=146990.00 loops=500)
+                      Buffers: shared hit=472000
+                ->  Hash  (cost=1207.00..1207.00 rows=12 width=4) (actual time=5.072..5.072 rows=12.07 loops=500)
+                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                      Buffers: shared hit=224000
+                      ->  Seq Scan on fact_orders o  (cost=0.00..1207.00 rows=12 width=4) (actual time=0.429..5.050 rows=12.07 loops=500)
+                            Filter: (customer_id = c.customer_id)
+                            Rows Removed by Filter: 60708
+                            Buffers: shared hit=224000
+Planning Time: 0.328 ms
+Execution Time: 13881.759 ms

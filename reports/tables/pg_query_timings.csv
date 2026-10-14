@@ -1,0 +1,4 @@
+case,before_ms,after_ms,speedup_x
+1. Function on column (SARGability),35.66,25.74,1.39
+2. Recompute vs pre-aggregated table,103.98,0.22,472.64
+3. Correlated subquery per row,8837.3,157.69,56.04

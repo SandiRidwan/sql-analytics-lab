@@ -1,0 +1,22 @@
+Aggregate  (cost=5613.23..5613.24 rows=1 width=8) (actual time=43.948..43.951 rows=1.00 loops=1)
+  Buffers: shared hit=1419
+  ->  Hash Join  (cost=1709.40..5425.48 rows=75097 width=0) (actual time=7.846..40.658 rows=74339.00 loops=1)
+        Hash Cond: (i.order_id = o.order_id)
+        Buffers: shared hit=1419
+        ->  Seq Scan on fact_order_items i  (cost=0.00..2413.90 rows=146990 width=4) (actual time=0.027..6.465 rows=146990.00 loops=1)
+              Buffers: shared hit=944
+        ->  Hash  (cost=1328.90..1328.90 rows=30440 width=4) (actual time=7.673..7.674 rows=30385.00 loops=1)
+              Buckets: 32768  Batches: 1  Memory Usage: 1325kB
+              Buffers: shared hit=475
+              ->  Bitmap Heap Scan on fact_orders o  (cost=424.30..1328.90 rows=30440 width=4) (actual time=1.169..4.295 rows=30385.00 loops=1)
+                    Recheck Cond: ((order_date >= '2025-01-01'::date) AND (order_date < '2026-01-01'::date))
+                    Heap Blocks: exact=447
+                    Buffers: shared hit=475
+                    ->  Bitmap Index Scan on idx_orders_date  (cost=0.00..416.69 rows=30440 width=0) (actual time=1.088..1.088 rows=30385.00 loops=1)
+                          Index Cond: ((order_date >= '2025-01-01'::date) AND (order_date < '2026-01-01'::date))
+                          Index Searches: 1
+                          Buffers: shared hit=28
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.263 ms
+Execution Time: 44.240 ms

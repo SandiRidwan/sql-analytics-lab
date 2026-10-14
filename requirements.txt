@@ -1,0 +1,11 @@
+# Core (DuckDB path: no server needed)
+duckdb>=1.0
+
+# PostgreSQL lab (real before/after tuning)
+psycopg2-binary>=2.9
+
+# SQL Server / T-SQL lab (real T-SQL execution)
+pyodbc>=5.0
+
+# Tests
+pytest>=8.0

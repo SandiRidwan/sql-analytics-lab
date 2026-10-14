@@ -1,0 +1,30 @@
+Sort  (cost=8119.46..8119.47 rows=5 width=37) (actual time=120.312..120.327 rows=6.00 loops=1)
+  Sort Key: (sum(((i.quantity)::numeric * i.unit_price))) DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=1464
+  ->  HashAggregate  (cost=8119.34..8119.40 rows=5 width=37) (actual time=120.297..120.314 rows=6.00 loops=1)
+        Group Key: c.region
+        Batches: 1  Memory Usage: 32kB
+        Buffers: shared hit=1464
+        ->  Hash Join  (cost=2158.22..6621.34 rows=149800 width=15) (actual time=23.421..78.055 rows=148773.00 loops=1)
+              Hash Cond: (i.order_id = o.order_id)
+              Buffers: shared hit=1464
+              ->  Seq Scan on fact_order_items i  (cost=0.00..2413.90 rows=146990 width=14) (actual time=0.017..6.359 rows=146990.00 loops=1)
+                    Buffers: shared hit=944
+              ->  Hash  (cost=1399.22..1399.22 rows=60720 width=9) (actual time=23.220..23.233 rows=60720.00 loops=1)
+                    Buckets: 65536  Batches: 1  Memory Usage: 2996kB
+                    Buffers: shared hit=520
+                    ->  Hash Join  (cost=184.50..1399.22 rows=60720 width=9) (actual time=1.075..13.721 rows=60720.00 loops=1)
+                          Hash Cond: (o.customer_id = c.customer_id)
+                          Buffers: shared hit=520
+                          ->  Seq Scan on fact_orders o  (cost=0.00..1055.20 rows=60720 width=8) (actual time=0.008..2.508 rows=60720.00 loops=1)
+                                Buffers: shared hit=448
+                          ->  Hash  (cost=122.00..122.00 rows=5000 width=9) (actual time=1.034..1.040 rows=5000.00 loops=1)
+                                Buckets: 8192  Batches: 1  Memory Usage: 279kB
+                                Buffers: shared hit=72
+                                ->  Seq Scan on dim_customer c  (cost=0.00..122.00 rows=5000 width=9) (actual time=0.008..0.430 rows=5000.00 loops=1)
+                                      Buffers: shared hit=72
+Planning:
+  Buffers: shared hit=6
+Planning Time: 0.303 ms
+Execution Time: 120.930 ms

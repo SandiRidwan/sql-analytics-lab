@@ -1,0 +1,8 @@
+Sort  (cost=1.14..1.15 rows=6 width=15) (actual time=0.009..0.010 rows=6.00 loops=1)
+  Sort Key: rev DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=1
+  ->  Seq Scan on agg_region_revenue  (cost=0.00..1.06 rows=6 width=15) (actual time=0.005..0.005 rows=6.00 loops=1)
+        Buffers: shared hit=1
+Planning Time: 0.021 ms
+Execution Time: 0.016 ms

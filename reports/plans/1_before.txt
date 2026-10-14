@@ -1,0 +1,16 @@
+Aggregate  (cost=4488.89..4488.90 rows=1 width=8) (actual time=43.041..43.044 rows=1.00 loops=1)
+  Buffers: shared hit=1392
+  ->  Hash Join  (cost=1514.40..4487.01 rows=750 width=0) (actual time=11.641..40.194 rows=74339.00 loops=1)
+        Hash Cond: (i.order_id = o.order_id)
+        Buffers: shared hit=1392
+        ->  Seq Scan on fact_order_items i  (cost=0.00..2413.90 rows=146990 width=4) (actual time=0.013..5.755 rows=146990.00 loops=1)
+              Buffers: shared hit=944
+        ->  Hash  (cost=1510.60..1510.60 rows=304 width=4) (actual time=11.614..11.615 rows=30385.00 loops=1)
+              Buckets: 32768 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 1325kB
+              Buffers: shared hit=448
+              ->  Seq Scan on fact_orders o  (cost=0.00..1510.60 rows=304 width=4) (actual time=0.009..8.438 rows=30385.00 loops=1)
+                    Filter: (date_part('year'::text, (order_date)::timestamp without time zone) = '2025'::double precision)
+                    Rows Removed by Filter: 30335
+                    Buffers: shared hit=448
+Planning Time: 0.231 ms
+Execution Time: 43.290 ms
